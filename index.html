@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- vueの読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+</head>
+
+<body>
+    <div id="app">
+        <h2>｛｛ message ｝｝の表示</h2>
+        {{ message }}
+    </div>
+
+    <div id="app-2">
+
+        <span v-bind:title="message">
+          Hover your mouse over me for a few seconds
+          to see my dynamically bound title!
+        </span>
+    </div>
+
+    <div id="app-3">
+        <h2>v-ifがtrueで文字を表示</h2>
+        <span v-if="seen">Now you see me</span>
+    </div>
+
+    <div id="app-4">
+        <h2>配列を取り出す</h2>
+        <ol>
+            <li v-for="todo in todos">
+                {{ todo.text }}
+            </li>
+        </ol>
+    </div>
+
+    <div id="app-5">
+        <h2>クリックでmessageを反転</h2>
+        <p>{{ message }}</p>
+        <button v-on:click="reverseMessage">Reverse Message</button>
+    </div>
+
+    <div id="app-6">
+        <h2>inputの中の文字を上に表示</h2>
+        <p>{{ message }}</p>
+        <input v-model="message">
+    </div>
+
+    <div id="app-7">
+        <h2>配列を順番に取り出し</h2>
+        <ol>
+            <!--
+            各 todo-item の内容を表す todo オブジェクトを与えます。
+            これにより内容は動的に変化します。
+            また後述する "key" を各コンポーネントに提供する必要があります。
+          -->
+            <todo-item v-for="item in groceryList" v-bind:todo="item" v-bind:key="item.id"></todo-item>
+        </ol>
+    </div>
+
+    <div id="example-1">
+        <h2>カウント</h2>
+        <button v-on:click="counter += 1">Add 1</button>
+        <p>The button above has been clicked {{ counter }} times.</p>
+    </div>
+
+    <div id="example-2">
+        <h2>クリックでHello.vue → buttonの表示</h2>
+        <!-- `greet` は、あらかじめ定義したメソッドの名前 -->
+        <button v-on:click="greet">Greet</button>
+    </div>
+
+    <div id="example-3">
+        <h2>say,whatをclick → alertで返す</h2>
+        <button v-on:click="say('hi')">Say hi</button>
+        <button v-on:click="say('what')">Say what</button>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello Vue!'
+            }
+        })
+        var app2 = new Vue({
+            el: '#app-2',
+            data: {
+                message: 'You loaded this page on ' + new Date().toLocaleString()
+            }
+        })
+
+        var app3 = new Vue({
+            el: '#app-3',
+            data: {
+                seen: true
+            }
+        })
+
+        var app4 = new Vue({
+            el: '#app-4',
+            data: {
+                todos: [{
+                    text: 'Learn JavaScript'
+                }, {
+                    text: 'Learn Vue'
+                }, {
+                    text: 'Build something awesome'
+                }]
+            }
+        })
+
+        var app5 = new Vue({
+            el: '#app-5',
+            data: {
+                message: 'Hello Vue.js!'
+            },
+            methods: {
+                reverseMessage: function() {
+                    this.message = this.message.split('').reverse().join('')
+                }
+            }
+        })
+
+        var app6 = new Vue({
+            el: '#app-6',
+            data: {
+                message: 'Hello Vue!'
+            }
+        })
+
+        Vue.component('todo-item', {
+            props: ['todo'],
+            template: '<li>{{ todo.text }}</li>'
+        })
+
+        var app7 = new Vue({
+            el: '#app-7',
+            data: {
+                groceryList: [{
+                    id: 0,
+                    text: 'Vegetables'
+                }, {
+                    id: 1,
+                    text: 'Cheese'
+                }, {
+                    id: 2,
+                    text: 'Whatever else humans are supposed to eat'
+                }]
+            }
+        })
+
+        var example1 = new Vue({
+            el: '#example-1',
+            data: {
+                counter: 0
+            }
+        })
+
+        var example2 = new Vue({
+            el: '#example-2',
+            data: {
+                name: 'Vue.js'
+            },
+            // `methods` オブジェクトの下にメソッドを定義する
+            methods: {
+                greet: function(event) {
+                    // メソッド内の `this` は、 Vue インスタンスを参照します
+                    alert('Hello ' + this.name + '!')
+                        // `event` は、ネイティブ DOM イベントです
+                    if (event) {
+                        alert(event.target.tagName)
+                    }
+                }
+            }
+        })
+
+        new Vue({
+            el: '#example-3',
+            methods: {
+                say: function(message) {
+                    alert(message)
+                }
+            }
+        })
+    </script>
+
+</body>
+
+</html>
